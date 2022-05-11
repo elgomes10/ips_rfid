@@ -31,9 +31,11 @@ land_predictors = landmarc.iloc[:, :num_features].values
 #Set regions in dataframe
 counter = 0
 for region in regions:
-    landmarc.loc[landmarc['TagID'] == region,'region'] = counter
+    landmarc.loc[landmarc['TagID'].isin(region),'region'] = counter
     counter = counter+1
     
+landmarc['region'] = landmarc['region'].astype(int)
+
 #Train the classifier to predict the region    
 vclass = landmarc.loc[:, 'region'].values
 classifier = RandomForestClassifier(n_estimators=1000, criterion='entropy', random_state=0)
